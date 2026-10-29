@@ -1,0 +1,8 @@
+# One bundle owns both WorkBuddy providers and the settings page that signs
+# them in. The upstream protocol (HTTP client, catalog parser, loopback shim,
+# pi-ai adapter) comes from `dsh-workbuddy-connect` as a *library*: its own
+# bundle row is deliberately absent, so its desktop-app sign-in detection and
+# its separate settings card never appear beside this one.
+- insert:
+    - id: workbuddy-subscription
+      name: dsh-workbuddy-subscription

@@ -1,0 +1,62 @@
+{
+  "name": "dsh-workbuddy-subscription",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sign in to WorkBuddy from Settings, then read the account's remaining credit and model roster in DeepSeek Harness.",
+  "type": "module",
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "lib",
+    "vendor/dsh-workbuddy-connect/lib",
+    "vendor/dsh-workbuddy-connect/LICENSE",
+    "vendor/dsh-workbuddy-connect/PROVENANCE.json",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "THIRD_PARTY_NOTICES.md",
+    "vendor/dsh-workbuddy-connect/PATCH.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-client-ui-settings"
+      ]
+    }
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "@deepseek-ai/dsh-atomic-write": ">=0.1.2-rc.1",
+    "@deepseek-ai/dsh-home-paths": ">=0.1.2-rc.1",
+    "@deepseek-ai/dsh-llm": ">=0.1.2-rc.1",
+    "@deepseek-ai/dsh-llm-pi-ai": ">=0.1.2-rc.1",
+    "@deepseek-ai/schemastery": ">=3.18.2",
+    "@earendil-works/pi-ai": "*"
+  },
+  "icon": "./icon.svg",
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "dsh",
+    "workbuddy",
+    "codebuddy",
+    "subscription",
+    "quota"
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,16 @@
+{
+  "name": "dsh-workbuddy-connect",
+  "version": "0.7.3",
+  "private": true,
+  "description": "Vendored copy of dsh-workbuddy-connect's runtime, kept inside this plugin. See PROVENANCE.json and LICENSE in this directory.",
+  "type": "module",
+  "_comment": "Only `peerDependencies` is load-bearing here: DSH's profile resolver intercepts a bare import when the nearest package.json above the importing module declares that name as a peer. Without this manifest those imports fall through to native resolution and fail, because a linked plugin has no node_modules of its own.",
+  "peerDependencies": {
+    "@deepseek-ai/dsh-atomic-write": ">=0.1.2-rc.1",
+    "@deepseek-ai/dsh-home-paths": ">=0.1.2-rc.1",
+    "@deepseek-ai/dsh-llm": ">=0.1.2-rc.1",
+    "@deepseek-ai/dsh-llm-pi-ai": ">=0.1.2-rc.1",
+    "@deepseek-ai/schemastery": ">=3.18.2",
+    "@earendil-works/pi-ai": "*"
+  }
+}

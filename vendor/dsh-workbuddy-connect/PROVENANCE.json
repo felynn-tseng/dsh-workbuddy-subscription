@@ -1,0 +1,40 @@
+{
+  "name": "dsh-workbuddy-connect",
+  "version": "0.7.3",
+  "description": "将 WorkBuddy 桌面 App 包含的模型自动接入 DeepSeek Harness — bring WorkBuddy desktop app models into DeepSeek Harness with zero configuration.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/corrinehu/dsh-workbuddy-connect.git"
+  },
+  "homepage": "https://github.com/corrinehu/dsh-workbuddy-connect#readme",
+  "author": "corrinehu",
+  "localPatch": {
+    "file": "lib/host-heartbeat-DpaqHdXw.js",
+    "patches": [
+      {
+        "name": "conversation trio",
+        "summary": "Chat requests carry X-Conversation-ID / -Request-ID / -Message-ID as fresh UUIDs per request.",
+        "reason": "Since 2026-10-16 the international gateway answers 400 / 11128 to any chat without the trio. Verified 2026-10-27: any one or two of the three still fail; all three pass; X-Agent-* is irrelevant. Fresh ids per request match upstream 0.7.9 (issue #139) and avoid relating a conversation id to a tool set that sub-agents change.",
+        "verified": "Both products HTTP 200 through the plugin's own client and its loopback shim; China unaffected."
+      },
+      {
+        "name": "failure capture",
+        "summary": "A refused chat writes $DSH_HOME/.workbuddy-chat-failure.json with model, tool names, status and upstream body.",
+        "reason": "A refusal message alone does not identify the payload; the request body never reaches a log. No message content is written."
+      },
+      {
+        "name": "daily check-in (China build)",
+        "summary": "Adds fetchCheckinStatus and claimDailyCheckin to the upstream client, on the billing host it already uses.",
+        "reason": "The vendored 0.7.3 has no check-in surface. Both endpoints answer on billingBase with billingHeaders; measured 2026-10-28 the China account reports active:true with a 14-day streak and the international build reports active:false.",
+        "safety": "The claim mutates the account (real reward). It is reachable only from a user click; the Host re-reads the status first, is single-flight per product, and invalidates the cached credit reading."
+      },
+      {
+        "name": "normalize the China chat body",
+        "summary": "prepareCnChatBody now forces stream, rewrites role developer to system, and flattens an object tool_choice — the three repairs only the international path made.",
+        "reason": "Measured 2026-10-29 on a signed-in China account: a developer-role message returns 400/11128 'Illegal API invocation from an unapproved channel' (the page's 「请求被拦截，请重新发送」, which is why it looked like the earlier channel-verification failure), and an object tool_choice returns 400/11101 'cannot unmarshal object into Go struct field Request.tool_choice of type string'. Both are exactly what prepareChatBody fixes."
+      }
+    ],
+    "see": "PATCH.md"
+  }
+}
